@@ -17,6 +17,7 @@
 #' @export
 #' @examples
 #' install_data('MCDB', 'csv')
+
 install_data = function(dataset, connection, db_file=NULL,
                                 log_dir=NULL, user=NULL, pwd=NULL, host=NULL,
                                 port=NULL){
