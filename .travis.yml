@@ -7,6 +7,7 @@ r_packages:
   - RPostgreSQL
   - DBI
   - testthat
+  - reticulate
 
 services:
   - postgresql
@@ -23,21 +24,6 @@ addons:
       - r-cran-devtools
 
 before_install:
-  - export PATH=$(which python$R_PYTHON_VERSION):$PATH
-  - export PYTHON=$(which python$R_PYTHON_VERSION)
-  - export PYTHONPATH=$(which python$R_PYTHON_VERSION):$PYTHONPATH
-  - export RETICULATE_PYTHON=$PYTHON
-  - R_PATH="PATH=$PATH" | echo $R_PATH >  ~/.Renviron
-  - R_RETICULATE_PYTHON="RETICULATE_PYTHON=$PYTHON" | echo $R_RETICULATE_PYTHON >>  ~/.Renviron
-  - psql -c 'create database testdb;' -U postgres
-
-install:
-  - R -e 'devtools::install_deps(dep = T)'
-  - R -e 'devtools::install_github("klutometis/roxygen")'
-  # - R -e 'install.packages(c("reticulate"), dependencies=TRUE)'
-  - R -e 'devtools::install_github("rstudio/reticulate")'
-  - R -e 'library(reticulate)'
-
   # Install Python using conda
   - sudo apt-get update
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -52,8 +38,22 @@ install:
 
   # Install the current master of retriever
   - pip install git+https://git@github.com/weecology/retriever.git
-  
-  # Install devtools
+
+  # Handle Path
+  - export PATH=$(which python$R_PYTHON_VERSION):$PATH
+  - export PYTHON=$(which python$R_PYTHON_VERSION)
+  - export PYTHONPATH=$(which python$R_PYTHON_VERSION):$PYTHONPATH
+  - export RETICULATE_PYTHON=$PYTHON
+  - R_PATH="PATH=$PATH" | echo $R_PATH >  ~/.Renviron
+  - R_RETICULATE_PYTHON="RETICULATE_PYTHON=$PYTHON" | echo $R_RETICULATE_PYTHON >>  ~/.Renviron
+  - psql -c 'create database testdb;' -U postgres
+
+install:
+  - R -e 'devtools::install_deps(dep = T)'
+  - R -e 'devtools::install_github("klutometis/roxygen")'
+  # - R -e 'install.packages(c("reticulate"), dependencies=TRUE)'
+  - R -e 'devtools::install_github("rstudio/reticulate")'
+  - R -e 'library(reticulate)'
   - R -e 'devtools::install_deps(dep = T)'
 
 script:
@@ -62,3 +62,4 @@ script:
   - R -e 'library(testthat)'
   #- R -e 'library(reticulate); rt <- import("retriever"); rdataretriever::datasets()'
   - R -e 'library(devtools);devtools::test()'
+  - cat rdataretriever.Rcheck/00install.out
