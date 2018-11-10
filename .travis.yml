@@ -40,12 +40,12 @@ before_install:
   - pip install git+https://git@github.com/weecology/retriever.git
 
   # Handle Path
-  # - export PATH=$(which python$R_PYTHON_VERSION):$PATH
-  # - export PYTHON=$(which python$R_PYTHON_VERSION)
-  # - export PYTHONPATH=$(which python$R_PYTHON_VERSION):$PYTHONPATH
-  # - export RETICULATE_PYTHON=$PYTHON
-  # - R_PATH="PATH=$PATH" | echo $R_PATH >  ~/.Renviron
-  # - R_RETICULATE_PYTHON="RETICULATE_PYTHON=$PYTHON" | echo $R_RETICULATE_PYTHON >>  ~/.Renviron
+  - export PATH=$(which python$R_PYTHON_VERSION):$PATH
+  - export PYTHON=$(which python$R_PYTHON_VERSION)
+  - export PYTHONPATH=$(which python$R_PYTHON_VERSION):$PYTHONPATH
+  - export RETICULATE_PYTHON=$PYTHON
+  - R_PATH="PATH=$PATH" | echo $R_PATH >  ~/.Renviron
+  - R_RETICULATE_PYTHON="RETICULATE_PYTHON=$PYTHON" | echo $R_RETICULATE_PYTHON >>  ~/.Renviron
   - psql -c 'create database testdb;' -U postgres
 
 install:
@@ -58,6 +58,7 @@ install:
 
 script:
   - R CMD build .
+  - R -e "install.packages('rdataretriever_1.0.0.tar.gz', repos=NULL, type='source')"
   - R CMD check *tar.gz
   - R -e 'library(testthat)'
   #- R -e 'library(reticulate); rt <- import("retriever"); rdataretriever::datasets()'
