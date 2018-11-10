@@ -40,6 +40,8 @@ before_install:
   - pip install git+https://git@github.com/weecology/retriever.git
 
   # Handle Path
+  - which python
+  - which python$R_Python_Version
   - export PATH=$(which python$R_PYTHON_VERSION):$PATH
   - export PYTHON=$(which python$R_PYTHON_VERSION)
   - export PYTHONPATH=$(which python$R_PYTHON_VERSION):$PYTHONPATH
@@ -57,6 +59,8 @@ install:
   - R -e 'devtools::install_deps(dep = T)'
 
 script:
+  - R -e "library(reticulate)"
+  - R -e "library(reticulate); rt <- import('retriever')"
   - R CMD build .
   - R -e "install.packages('rdataretriever_1.0.0.tar.gz', repos=NULL, type='source')"
   - R CMD check *tar.gz
