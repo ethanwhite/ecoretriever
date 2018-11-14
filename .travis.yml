@@ -39,6 +39,7 @@ before_install:
   # Install the current master of retriever
   - which pip
   - pip install git+https://git@github.com/weecology/retriever.git
+  - ls /home/travis/miniconda/envs/test-environment/lib/python3.7/site-packages
 
   # Handle Path
   - which python
