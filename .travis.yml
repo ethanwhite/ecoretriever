@@ -33,13 +33,12 @@ before_install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - conda create -q -n test-environment python=3 xlrd future argcomplete tqdm requests pandas pymysql psycopg2
+  - conda create -q -n test-environment python=3 xlrd future argcomplete tqdm requests pandas=0.22.0 pymysql psycopg2
   - source activate test-environment
 
   # Install the current master of retriever
   - which pip
   - pip install git+https://git@github.com/weecology/retriever.git
-  - ls /home/travis/miniconda/envs/test-environment/lib/python3.7/site-packages
 
   # Handle Path
   - which python
