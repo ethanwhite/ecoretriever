@@ -60,7 +60,7 @@ install:
 
 script:
   - R -e "library(reticulate)"
-  - R -e "library(reticulate); rt <- import('retriever')"
+  - R -e "library(reticulate); use_condaenv('test-environment'); rt <- import('retriever')"
   - R CMD build .
   - R -e "install.packages('rdataretriever_1.0.0.tar.gz', repos=NULL, type='source')"
   - R CMD check *tar.gz
