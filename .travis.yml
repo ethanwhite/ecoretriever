@@ -59,7 +59,10 @@ install:
   - R -e 'devtools::install_deps(dep = T)'
 
 script:
+  - conda activate test-environment
   - R -e "library(reticulate)"
+  - R -e "library(reticulate); use_condaenv('test-environment')"
+  - R -e "library(reticulate); use_condaenv('test-environment'); import('xlrd')"
   - R -e "library(reticulate); use_condaenv('test-environment'); rt <- import('retriever')"
   - R CMD build .
   - R -e "install.packages('rdataretriever_1.0.0.tar.gz', repos=NULL, type='source')"
