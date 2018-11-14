@@ -37,6 +37,7 @@ before_install:
   - source activate test-environment
 
   # Install the current master of retriever
+  - which pip
   - pip install git+https://git@github.com/weecology/retriever.git
 
   # Handle Path
